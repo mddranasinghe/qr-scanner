@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>ZXing Barcode Scanner</title>
+    <title>ZXing Barcode Scanner - Fixed</title>
     <style>
         * {
             margin: 0;
@@ -15,9 +15,6 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             padding: 20px;
         }
 
@@ -28,6 +25,7 @@
             overflow: hidden;
             max-width: 800px;
             width: 100%;
+            margin: 0 auto;
         }
 
         .header {
@@ -58,12 +56,23 @@
             border-radius: 12px;
             overflow: hidden;
             margin-bottom: 20px;
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         #video {
             width: 100%;
             height: auto;
             display: block;
+        }
+
+        .video-placeholder {
+            position: absolute;
+            color: white;
+            text-align: center;
+            padding: 20px;
         }
 
         .scan-overlay {
@@ -102,6 +111,7 @@
             display: flex;
             gap: 10px;
             margin-bottom: 20px;
+            flex-wrap: wrap;
         }
 
         button {
@@ -114,6 +124,7 @@
             font-size: 16px;
             cursor: pointer;
             transition: transform 0.2s, opacity 0.2s;
+            min-width: 100px;
         }
 
         button:hover {
@@ -129,6 +140,20 @@
             opacity: 0.5;
             cursor: not-allowed;
             transform: none;
+        }
+
+        .camera-selector {
+            margin-bottom: 20px;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
         }
 
         .result-container {
@@ -155,6 +180,8 @@
             background: #f8f9fa;
             border-radius: 8px;
             margin-top: 5px;
+            max-height: 200px;
+            overflow-y: auto;
         }
 
         .result-type {
@@ -193,6 +220,12 @@
             border: 1px solid #bee5eb;
         }
 
+        .status.warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+
         @media (max-width: 600px) {
             .container {
                 margin: 10px;
@@ -200,6 +233,11 @@
             
             .result-value {
                 font-size: 14px;
+            }
+            
+            button {
+                font-size: 14px;
+                padding: 10px;
             }
         }
     </style>
@@ -216,9 +254,18 @@
                 🔄 Initializing camera...
             </div>
             
+            <div class="camera-selector">
+                <select id="cameraSelect">
+                    <option value="">Select a camera...</option>
+                </select>
+            </div>
+            
             <div class="video-wrapper">
-                <video id="video" autoplay playsinline></video>
-                <div class="scan-overlay">
+                <video id="video" autoplay playsinline muted></video>
+                <div class="video-placeholder" id="videoPlaceholder" style="display: none;">
+                    📷 Camera preview will appear here
+                </div>
+                <div class="scan-overlay" id="scanOverlay" style="display: none;">
                     <div class="scan-frame"></div>
                 </div>
             </div>
@@ -226,6 +273,7 @@
             <div class="controls">
                 <button id="startBtn">▶ Start Scanner</button>
                 <button id="stopBtn" disabled>⏹ Stop Scanner</button>
+                <button id="testCameraBtn">📸 Test Camera</button>
             </div>
             
             <div class="result-container">
@@ -236,6 +284,6 @@
         </div>
     </div>
     
-    <script src="barcode-reader.js"></script>
+    <script type="module" src="barcode-reader.js"></script>
 </body>
 </html>
