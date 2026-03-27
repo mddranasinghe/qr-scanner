@@ -1,4 +1,4 @@
-import { BrowserMultiFormatReader, NotFoundException, ChecksumException, FormatException } from 'https://unpkg.com/@zxing/library@0.19.1/index.js';
+import { BrowserMultiFormatReader, NotFoundException, ChecksumException, FormatException } from 'https://cdn.skypack.dev/@zxing/library@0.19.1';
 
 class BarcodeScanner {
     constructor() {
